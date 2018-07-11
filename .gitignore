@@ -3,24 +3,24 @@
 *.mymetadata
 *.MF
 -- setting
-**/.settings/
+*/.settings/
 
 -- idea 配置文件
-**/.idea
+*/.idea
 
 -- iml文件
 *.iml
 
 -- 线上接口文件
-**/javadocs
+*/javadocs
 
 -- log文件
 *.log
-**/log
+*/log
 
 -- target
-**/target
+*/target
 /bin/
 
 -- disconf
-**/disconf
+*/disconf
