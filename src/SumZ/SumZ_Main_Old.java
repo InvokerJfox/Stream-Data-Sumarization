@@ -33,7 +33,7 @@ public class SumZ_Main_Old {
 		double[] p = Common.SPW01(os);// it's generate data cost.because
 		// some attribute is never disappear
 
-		//while (k++ < 20) {
+		while (k++ < 40) {
 			//lk = (int) Math.sqrt(k);
 
 			// 1.1 Standard Greedy
@@ -87,9 +87,9 @@ public class SumZ_Main_Old {
 			// 2.5 Stream hierarchySieve -Greedy
 			// StreamHierarchySieve(os, true, null, true);
 
-		//}
+		}
 
-		//ShowResult();
+		ShowResult();
 	}
 
 	/*
