@@ -1,18 +1,18 @@
-package cn.jfoxx.summarization.standalone.core.Stream_Sieve;
-
-import java.util.ArrayList;
+package cn.jfoxx.summarization.standalone.core.stream.sieve.Integrity;
 
 import cn.jfoxx.summarization.standalone.gain.Calculator;
 import cn.jfoxx.util.get.GDoubleMatrix;
 
-public class SS_Main {
+import java.util.ArrayList;
+
+public class StreamSieveMain {
     public static int k;// size of sumZ
     public static double mg;// current max gain
     public static int d;// the demension of sumZ
     public static int maxI;// i:current max (1+e)^i
     public static double e;// e:(1+e)^i
     public static double mr;// m<(1+e)^i<mr*k*m
-    public static ArrayList<SS_Siever> sievers;// sievers list
+    public static ArrayList<StreamSiever> sievers;// sievers list
     public static int maxSiverid;// the beast siver
 
     public static double[] p;// power
@@ -34,7 +34,7 @@ public class SS_Main {
         // initial have not add a new siever
         maxI = (int) Math.floor(Math.log10(_mg) / Math.log10(1 + e)) - 1;
         // System.out.println("maxI:"+maxI);
-        sievers = new ArrayList<SS_Siever>();
+        sievers = new ArrayList<StreamSiever>();
 
         Disperse();
     }
@@ -44,9 +44,9 @@ public class SS_Main {
      */
     public static void GetMaxSieveid() {
         double mGain = 0;
-        ArrayList<SS_Siever> sf = sievers;
+        ArrayList<StreamSiever> sf = sievers;
         for (int j = 0; j < sf.size(); j++) {
-            SS_Siever s = sf.get(j);
+            StreamSiever s = sf.get(j);
             if (s.Gain > mGain) {
                 mGain = s.Gain;
                 maxSiverid = j;
@@ -110,7 +110,7 @@ public class SS_Main {
             //System.out.println("Math.pow(1 + e, i):"+Math.pow(1 + e, i));
             double tGain = Math.pow(1 + e, i);
             // Add a new SS_Siever_NoPower
-            SS_Siever s = new SS_Siever(k, tGain, d);
+            StreamSiever s = new StreamSiever(k, tGain, d);
             sievers.add(s);
             // System.out.println("size:"+sievers.size()+" add:"+tGain);
         }
@@ -133,9 +133,9 @@ public class SS_Main {
         }
 
         // all filter
-        ArrayList<SS_Siever> sf = SS_Main.sievers;
-        for (int j = 0; j < sf.size(); j++) {
-            sf.get(j).SieveData(oid, o);
+        ArrayList<StreamSiever> sf = StreamSieveMain.sievers;
+        for (StreamSiever aSf : sf) {
+            aSf.SieveData(oid, o);
         }
     }
 
@@ -159,9 +159,9 @@ public class SS_Main {
         }
 
         // all filter
-        ArrayList<SS_Siever> sf = SS_Main.sievers;
-        for (int j = 0; j < sf.size(); j++) {
-            sf.get(j).SieveData(oid, o, p);
+        ArrayList<StreamSiever> sf = StreamSieveMain.sievers;
+        for (StreamSiever aSf : sf) {
+            aSf.SieveData(oid, o, p);
         }
     }
 }

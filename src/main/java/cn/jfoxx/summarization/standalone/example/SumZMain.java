@@ -1,28 +1,27 @@
 package cn.jfoxx.summarization.standalone.example;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import cn.jfoxx.summarization.standalone.core.StandardGreedy.Greedy;
-import cn.jfoxx.summarization.standalone.core.Stream_Greedy.SG_Main;
-import cn.jfoxx.summarization.standalone.core.Stream_HierarchySieve.SHS_Layers;
-import cn.jfoxx.summarization.standalone.core.Stream_HierarchyStream.HS_Main;
-import cn.jfoxx.summarization.standalone.core.Stream_Sieve.SS_Main;
-import cn.jfoxx.summarization.standalone.data.LoadData;
+import cn.jfoxx.summarization.standalone.core.global.greedy.standard.StandardGreedy;
+import cn.jfoxx.summarization.standalone.core.stream.greedy.StreamGreedy;
+import cn.jfoxx.summarization.standalone.core.stream.hierarchy.HierarchySieveMain;
+import cn.jfoxx.summarization.standalone.core.stream.sieve.Integrity.StreamSieveMain;
 import cn.jfoxx.summarization.standalone.entity.SumZ_AttList;
 import cn.jfoxx.summarization.standalone.entity.SumZ_Object;
+import cn.jfoxx.summarization.standalone.example.data.LoadData;
 import cn.jfoxx.summarization.standalone.gain.Calculator;
 import cn.jfoxx.util.get.GString;
 
-public class SumZ_Main {
-    static int d = 500; // total dimension
-    static int no = 2000;// 2000;// number of objects
-    static String path = "E://SumZ_Output//Data.txt";
-    static int k = 10;//
-    static int lk = 1;// lk
-    static int e = 1;// SHS min sieve gain
-    static double mr = 2;// sieve k*m*mr; deal the delete problem
-    static double cmk = 30;// SHS use it
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class SumZMain {
+    private static int d = 500; // total dimension
+    private static int no = 2000;// 2000;// number of objects
+    private static String path = "E://SumZ_Output//Data.txt";
+    private static int k = 10;//
+    private static int lk = 1;// lk
+    private static int e = 1;// SHS min sieve gain
+    private static double mr = 2;// sieve k*m*mr; deal the delete problem
+    private static double cmk = 30;// SHS use it
 
     static ArrayList<Double> Cov = new ArrayList<Double>();
 
@@ -40,19 +39,16 @@ public class SumZ_Main {
         // while (k++ < 20) {
         // lk = (int) Math.sqrt(k);
 
-        // 1.1 Standard Greedy
-        Standard_Greedy(os, false, p);
+        // 1.1 Standard StandardGreedy
+        StandardGreedy(os, false, p);
 
-        // 1.2 Stream Greedy
+        // 1.2 Stream StandardGreedy
         StreamGreedy(os, false, p);
 
         // 1.3 Sieve Stream
         SieveStream(os, false, p);
 
-        // 1.4 HierarchySieve - Greedy
-        StreamHierarchySieve(os, false, p, true);
-
-        // 1.5 HierarchyStream
+        // 1.4 HierarchyStream
         ArrayList<SumZ_Object> data = LoadData.LoadData_SumZ(path, no, d);
         SumZ_AttList np = Calculator.GetPower01(data);
         HierarchyStream(data, np);
@@ -64,61 +60,18 @@ public class SumZ_Main {
 
     private static void HierarchyStream(ArrayList<SumZ_Object> os,
                                         SumZ_AttList p) {
-        HS_Main.initial(os, k, lk, p, e);
-        HS_Main.DealAll();
+        HierarchySieveMain.initial(os, k, lk, p, e);
+        HierarchySieveMain.DealAll();
 
-        SumZ_AttList s_f = HS_Main.GetSumZf();
+        SumZ_AttList s_f = HierarchySieveMain.GetSumZf();
 
         // coverage
         System.out.print("HierarchyStream algorithm Coverage : "
                 + Calculator.Coverage(s_f, p) + "% \nthe SumZ is : "
-                + HS_Main.sumZ.toString(" / ") + "\n");
+                + HierarchySieveMain.sumZ.toString(" / ") + "\n");
 
         // Save Result
         Cov.add(Calculator.Coverage(s_f, p));
-    }
-
-    /*
-     * Stream Deal - Stream Hierarchy Sieve algorithm
-     *
-     * @param os: Data
-     *
-     * @param p:power
-     *
-     * @param IsGreedy: Greedy or Sieve method
-     */
-    private static void StreamHierarchySieve(ArrayList<int[]> os,
-                                             boolean IsPower, double[] p, boolean IsGreedy) {
-
-        // double cm = Calculator.GOO(o);// maxCalculator
-        SHS_Layers.Initial(cmk, k, lk, d, p, IsPower, IsGreedy);
-        // stream deal
-        for (int i = 0; i < os.size(); i++) {
-            //System.out.println(i);
-            SHS_Layers.DealNext(i, os.get(i), e);
-        }
-
-        // output result
-        p = SHS_Layers.p;
-        ArrayList<int[]> sumZ = SHS_Layers.GetSumZ();
-
-        int[] s_f = Calculator.GetFeather(sumZ, d);
-
-        // coverage
-        String isgrd = "(Sieve)";
-        if (IsGreedy)
-            isgrd = "(Greedy)";
-        System.out.print("StreamHierarchySieve" + isgrd
-                + " algorithm Coverage : " + Calculator.Coverage(s_f, p)
-                + "% \nthe SumZ is : "
-                + GString.fromList(SHS_Layers.GetSumZids(), " / ")
-                + "\n");
-
-        // Save Result
-        Cov.add(Calculator.Coverage(s_f, p));
-
-        // Show Layers
-        // SHS_Layers.printTopLayers(SHS_Layers.sievers.size());
     }
 
     /*
@@ -130,7 +83,7 @@ public class SumZ_Main {
      *
      * @param p:power
      */
-    public static void Standard_Greedy(ArrayList<int[]> os, boolean IsPower,
+    private static void StandardGreedy(ArrayList<int[]> os, boolean IsPower,
                                        double[] p) {
         // result args
         ArrayList<int[]> sumZ;
@@ -141,19 +94,19 @@ public class SumZ_Main {
             p = Calculator.GetPower(os);
 
             // output result
-            sumZ = Greedy.SumZWithP(os, k, d, p);
+            sumZ = StandardGreedy.SumZWithP(os, k, d, p);
             s_f = Calculator.GetFeather(sumZ, d);
 
         } else {
             // calculate without power
             // output result
-            sumZ = Greedy.SumZ(os, k, d);
+            sumZ = StandardGreedy.SumZ(os, k, d);
             s_f = Calculator.GetFeather(sumZ, d);
         }
         // coverage
         System.out.print("Standard_Greedy algorithm Coverage : "
                 + Calculator.Coverage(s_f, p) + "% \nthe SumZ is : "
-                + GString.fromList(Greedy.s_ids, " / ") + "\n");
+                + GString.fromList(StandardGreedy.s_ids, " / ") + "\n");
 
         // Save Result
         Cov.add(Calculator.Coverage(s_f, p));
@@ -183,33 +136,33 @@ public class SumZ_Main {
 
         if (IsPower) {
             // calculate the firstk power
-            SG_Main.Initial(k, d, firstk, Calculator.GetPower(firstk));
+            StreamGreedy.Initial(k, d, firstk, Calculator.GetPower(firstk));
 
             // stream deal
             for (int i = k; i < os.size(); i++) {
-                SG_Main.ChooseDataWithP(i, os.get(i));
+                StreamGreedy.ChooseDataWithP(i, os.get(i));
             }
         } else {
-            SG_Main.Initial(k, d, firstk);
+            StreamGreedy.Initial(k, d, firstk);
 
             // stream deal
             for (int i = k; i < os.size(); i++) {
-                SG_Main.ChooseData(i, os.get(i));
+                StreamGreedy.ChooseData(i, os.get(i));
             }
         }
 
         // output result
-        sumZ = SG_Main.sumZ;
+        sumZ = StreamGreedy.sumZ;
 
         s_f = Calculator.GetFeather(sumZ, d);
 
         if (IsPower)
-            p = SG_Main.p;
+            p = StreamGreedy.p;
 
         // coverage
         System.out.print("StreamGreedy algorithm Coverage : "
                 + Calculator.Coverage(s_f, p) + "% \nthe SumZ is : "
-                + GString.fromList(SG_Main.s_ids, " / ") + "\n");
+                + GString.fromList(StreamGreedy.s_ids, " / ") + "\n");
         // Save Result
         Cov.add(Calculator.Coverage(s_f, p));
 
@@ -224,8 +177,8 @@ public class SumZ_Main {
      *
      * @param p:power
      */
-    public static void SieveStream(ArrayList<int[]> os, boolean IsPower,
-                                   double[] p) {
+    private static void SieveStream(ArrayList<int[]> os, boolean IsPower,
+                                    double[] p) {
         // result args
         int[] s_f;
 
@@ -233,31 +186,31 @@ public class SumZ_Main {
         int[] o = os.get(0);
 
         double mg = Calculator.GOO(o);// maxCalculator
-        SS_Main.Initial(mg, 0.1, mr, k, d, o);// object =power
+        StreamSieveMain.Initial(mg, 0.1, mr, k, d, o);// object =power
 
         if (IsPower) {
             // stream deal
             for (int i = 0; i < os.size(); i++) {
-                SS_Main.DealNextWithP(i, os.get(i));
+                StreamSieveMain.DealNextWithP(i, os.get(i));
             }
         } else {
             // stream deal
             for (int i = 0; i < os.size(); i++) {
-                SS_Main.DealNext(i, os.get(i));
+                StreamSieveMain.DealNext(i, os.get(i));
             }
 
         }
 
         // output result
-        s_f = SS_Main.GetMaxSumZf();
+        s_f = StreamSieveMain.GetMaxSumZf();
 
         if (IsPower)
-            p = SS_Main.p;
+            p = StreamSieveMain.p;
 
         // coverage
         System.out.print("SieveStream algorithm Coverage : "
                 + Calculator.Coverage(s_f, p) + "% \nthe SumZ is : "
-                + GString.fromList(SS_Main.GetMaxSumZid(), " / ")
+                + GString.fromList(StreamSieveMain.GetMaxSumZid(), " / ")
                 + "\n");
 
         // Save Result

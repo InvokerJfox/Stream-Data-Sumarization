@@ -1,4 +1,4 @@
-package cn.jfoxx.summarization.standalone.core.Stream_Sieve;
+package cn.jfoxx.summarization.standalone.core.stream.sieve.step;
 
 import cn.jfoxx.summarization.standalone.gain.Calculator;
 import cn.jfoxx.util.file.FileControl;
@@ -7,7 +7,7 @@ import cn.jfoxx.util.get.GString;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SS_Siever_Step {
+public class StreamSieveStepObject {
     public int id;// this sieve's id
 
     public static int k;// max size of the sumZ
@@ -20,16 +20,16 @@ public class SS_Siever_Step {
     public double Gain;// the gain of this SumZ
     public double tGain;// target Gain
 
-    long runningtime;// running time
-    int startid;// start data index
-    ArrayList<int[]> data;// DetSet
+    public long runningTime;// running time
+    public int startId;// start data index
+    public ArrayList<int[]> data;// DetSet
 
-    String path = "E://SumZ_Output//Sieve_Result//";
+    private String path = "E://SumZ_Output//Sieve_Result//";
 
     /*
      * initial a new siever
      */
-    public SS_Siever_Step(int _id, double _tGain) {
+    public StreamSieveStepObject(int _id, double _tGain) {
         id = _id;
         tGain = _tGain;
     }
@@ -37,9 +37,9 @@ public class SS_Siever_Step {
     /*
      * initial a new siever
      */
-    public SS_Siever_Step(double _Gain, long _rt, ArrayList<Integer> _s_ids) {
+    public StreamSieveStepObject(double _Gain, long _rt, ArrayList<Integer> _s_ids) {
         Gain = _Gain;
-        runningtime = _rt;
+        runningTime = _rt;
         s_ids = _s_ids;
     }
 
@@ -58,8 +58,8 @@ public class SS_Siever_Step {
      *
      * @param _data :left DataSet
      */
-    public SS_Siever_Step(int _id, int _k, double _tGain, int d,
-                          long _starttime, int _startid, ArrayList<int[]> _data) {
+    public StreamSieveStepObject(int _id, int _k, double _tGain, int d,
+                                 long _startTime, int _startId, ArrayList<int[]> _data) {
         id = _id;
         k = _k;
         tGain = _tGain;
@@ -68,8 +68,8 @@ public class SS_Siever_Step {
         s_ids = new ArrayList<Integer>();
         sumZ = new ArrayList<int[]>();
 
-        runningtime = _starttime;
-        startid = _startid;
+        runningTime = _startTime;
+        startId = _startId;
         data = _data;
     }
 
@@ -79,12 +79,12 @@ public class SS_Siever_Step {
     public void Start() throws IOException {
         long st = System.currentTimeMillis();// this sieve start time
         // deal all data
-        for (int i = startid; i < data.size(); i++) {
+        for (int i = startId; i < data.size(); i++) {
             SieveData(i, data.get(i));
         }
 
         // running end
-        runningtime += System.currentTimeMillis() - st;
+        runningTime += System.currentTimeMillis() - st;
         // save result
         SaveResult();
     }
@@ -95,19 +95,13 @@ public class SS_Siever_Step {
             path += id + ".txt";
             StringBuffer sb = new StringBuffer();// Data
 
-            // save information format
-            // Gain:3000
-            // sids:134/321/62
-            // totaltime:24123
-            sb.append(Gain + "\r\n");
-            sb.append(GString.fromList(s_ids, "/") + "\r\n");
-            sb.append(runningtime);
+            sb.append(Gain).append("\r\n");
+            sb.append(GString.fromList(s_ids, "/")).append("\r\n");
+            sb.append(runningTime);
 
             FileControl.FileOutput(path, sb);
 
             //System.out.println("Sieve " + id + ": Done!");
-        } else {
-            //System.out.println("Sieve " + id + ": [empty]");
         }
     }
 
@@ -131,7 +125,6 @@ public class SS_Siever_Step {
             f = Calculator.AddFeatherByObject(f, o);
             s_ids.add(oid);
             sumZ.add(o);
-            c++;
             //System.out.println(oid + " keeped");
         }
     }
@@ -150,13 +143,12 @@ public class SS_Siever_Step {
         }
         // low bound of Gain
         double low = (tGain - Gain) / (k - c);
-        double og =Calculator.GOOoutF(o, f, p);
+        double og = Calculator.GOOoutF(o, f, p);
         if (og >= low) {// supply the demand ��insert all information
             this.Gain += og;
             f = Calculator.AddFeatherByObject(f, o);
             s_ids.add(oid);
             sumZ.add(o);
-            c++;
             // System.out.println(oid + " keeped");
         }
     }

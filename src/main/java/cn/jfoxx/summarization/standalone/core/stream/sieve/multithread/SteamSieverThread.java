@@ -1,10 +1,10 @@
-package cn.jfoxx.summarization.standalone.core.Stream_Sieve;
+package cn.jfoxx.summarization.standalone.core.stream.sieve.multithread;
 
 import cn.jfoxx.summarization.standalone.gain.Calculator;
 
 import java.util.ArrayList;
 
-public class SS_Siever_thread extends Thread {
+public class SteamSieverThread extends Thread {
 
 	public static int k;// max size of the sumZ
 
@@ -28,8 +28,8 @@ public class SS_Siever_thread extends Thread {
 	 * 
 	 * @param d:the demension of this sumZ
 	 */
-	public SS_Siever_thread(int _k, double _tGain, int d, ArrayList<int[]> _os,
-			int _startid) {
+	public SteamSieverThread(int _k, double _tGain, int d, ArrayList<int[]> _os,
+							 int _startid) {
 		k = _k;
 		tGain = _tGain;
 		Gain = 0;
@@ -62,7 +62,6 @@ public class SS_Siever_thread extends Thread {
 			f = Calculator.AddFeatherByObject(f, o);
 			s_ids.add(oid);
 			sumZ.add(o);
-			c++;
 			// System.out.println(oid + " keeped");
 		}
 	}
@@ -87,7 +86,6 @@ public class SS_Siever_thread extends Thread {
 			f = Calculator.AddFeatherByObject(f, o);
 			s_ids.add(oid);
 			sumZ.add(o);
-			c++;
 			// System.out.println(oid + " keeped");
 		}
 	}

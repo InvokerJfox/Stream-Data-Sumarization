@@ -1,4 +1,4 @@
-package cn.jfoxx.summarization.standalone.core.Stream_Sieve;
+package cn.jfoxx.summarization.standalone.core.stream.sieve.step;
 
 import cn.jfoxx.summarization.standalone.gain.Calculator;
 import cn.jfoxx.util.file.FileControl;
@@ -8,14 +8,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SS_Main_Step1 {
+public class StreamSieverStep1 {
     public static int k;// size of sumZ
     public static double mg;// current max gain
     public static int d;// the demension of sumZ
     public static int maxI;// i:current max (1+e)^i
     public static double e;// e:(1+e)^i
     public static double mr;// m<(1+e)^i<mr*k*m
-    public static ArrayList<SS_Siever_Step> sievers;// sievers list
+    public static ArrayList<StreamSieveStepObject> sievers;// sievers list
     public static int maxSiverid;// the beast siver
 
     public static double[] p;// power
@@ -47,7 +47,7 @@ public class SS_Main_Step1 {
         // initial have not add a new siever
         maxI = (int) Math.floor(Math.log10(_mg) / Math.log10(1 + e)) - 1;
 
-        sievers = new ArrayList<SS_Siever_Step>();
+        sievers = new ArrayList<StreamSieveStepObject>();
 
         tt = _st;
         st = _st;
@@ -92,7 +92,7 @@ public class SS_Main_Step1 {
         for (; Math.pow(1 + e, i) < mr * k * mg; i++) {
             double tGain = Math.pow(1 + e, i);
             // Add a new SS_Siever_NoPower
-            SS_Siever_Step s = new SS_Siever_Step(id, tGain);
+            StreamSieveStepObject s = new StreamSieveStepObject(id, tGain);
             sievers.add(s);
 
             // args

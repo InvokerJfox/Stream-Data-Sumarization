@@ -1,8 +1,8 @@
-package cn.jfoxx.summarization.standalone.core.Stream_Sieve;
+package cn.jfoxx.summarization.standalone.core.stream.sieve.Integrity;
 
 import java.util.ArrayList;
 
-public class SS_Siever {
+public class StreamSiever {
 	public static int k;// max size of the sumZ
 
 	public ArrayList<Integer> s_ids;// the sumZ'id of this SumZ
@@ -22,7 +22,7 @@ public class SS_Siever {
 	 * 
 	 * @param d:the demension of this sumZ
 	 */
-	public SS_Siever(int _k, double _tGain, int d) {
+	public StreamSiever(int _k, double _tGain, int d) {
 		k = _k;
 		tGain = _tGain;
 		Gain = 0;

@@ -6,11 +6,11 @@
 
     <groupId>cn.jfoxx.summarization.standalone</groupId>
     <artifactId>Stream-Data-Sumarization-Java-Standalone</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <dependencies>
-        <!--添加本地私有包-->
+        <!--添加本地jar包-->
         <dependency>
-            <groupId>jfoxx</groupId>
+            <groupId>cn.jfoxx.summarization</groupId>
             <artifactId>util</artifactId>
             <version>1.0</version>
             <scope>system</scope>
@@ -37,7 +37,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>cn.jfoxx.summarization.standalone.example.SumZ_Main</mainClass>
+                            <mainClass>cn.jfoxx.summarization.standalone.example.SumZMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

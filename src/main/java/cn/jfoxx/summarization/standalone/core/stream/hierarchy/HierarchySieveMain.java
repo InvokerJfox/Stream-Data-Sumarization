@@ -1,17 +1,17 @@
-package cn.jfoxx.summarization.standalone.core.Stream_HierarchyStream;
-
-import java.util.ArrayList;
+package cn.jfoxx.summarization.standalone.core.stream.hierarchy;
 
 import cn.jfoxx.summarization.standalone.entity.SumZ;
 import cn.jfoxx.summarization.standalone.entity.SumZ_AttList;
 import cn.jfoxx.summarization.standalone.entity.SumZ_Object;
 import cn.jfoxx.summarization.standalone.gain.Calculator;
 
-public class HS_Main {
+import java.util.ArrayList;
+
+public class HierarchySieveMain {
 
     public static int k;// size of sumZ
     public static int lk;// size of per layer
-    public static ArrayList<HS_Layers> layers;
+    public static ArrayList<HierarchySieveLayers> layers;
 
     static double e;// min sieve gain,if f(o)<e,delete o;
 
@@ -44,19 +44,17 @@ public class HS_Main {
      */
     public static void DealAll() {
         // 1.Load data from os,and deal in the 1st layer
-        layers = new ArrayList<HS_Layers>();
-        HS_Layers l = new HS_Layers(layers.size(), null, p, lk, e);
+        layers = new ArrayList<HierarchySieveLayers>();
+        HierarchySieveLayers l = new HierarchySieveLayers(layers.size(), null, p, lk, e);
         l.UpdateU_f(p);
         layers.add(l);
         int lid;// now ,dealing level;s id;
         SumZ_AttList lf;// now,dealing level's l_f
 
         // Deal All Data
-        for (int i = 0; i < Data.size(); i++) {
+        for (SumZ_Object o : Data) {
             // System.out.println("dealing : " + i);
             // waiting for deal Object
-            SumZ_Object o = Data.get(i);
-
             // reset
             lid = 0;
             lf = null;
@@ -76,7 +74,7 @@ public class HS_Main {
                 } else {
                     // System.out.println("add new layer!");
                     // new level
-                    l = new HS_Layers(layers.size(), null, p, lk, e);
+                    l = new HierarchySieveLayers(layers.size(), null, p, lk, e);
                     l.UpdateU_f(layers.get(lid - 1).L_f);
                     layers.add(l);
                     continue;
@@ -111,7 +109,7 @@ public class HS_Main {
         int i = 0;// level id ,from 0
         // add sumZ until |S|=k
         while (sumZ.Size() < k) {
-            HS_Layers l = layers.get(i);
+            HierarchySieveLayers l = layers.get(i);
             if (l != null) {
                 if (l.sumZ.Size() != 0) {
                     // no full until k
@@ -137,7 +135,7 @@ public class HS_Main {
      */
     public static void printTopLayers(int k) {
         for (int i = 0; i < k; i++) {
-            HS_Layers l = layers.get(i);
+            HierarchySieveLayers l = layers.get(i);
             // layer information
             System.out.println("Layer " + i + " : ");
 

@@ -1,10 +1,10 @@
-package cn.jfoxx.summarization.standalone.core.Stream_Greedy;
-
-import java.util.ArrayList;
+package cn.jfoxx.summarization.standalone.core.stream.greedy;
 
 import cn.jfoxx.summarization.standalone.gain.Calculator;
 
-public class SG_Main {
+import java.util.ArrayList;
+
+public class StreamGreedy {
 	public static int k;// size of sumZ
 	public static int d;// dimension
 	public static ArrayList<Integer> s_ids;// sumZ'ids list

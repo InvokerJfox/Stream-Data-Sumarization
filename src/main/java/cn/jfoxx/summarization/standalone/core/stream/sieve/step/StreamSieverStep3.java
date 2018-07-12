@@ -1,4 +1,4 @@
-package cn.jfoxx.summarization.standalone.core.Stream_Sieve;
+package cn.jfoxx.summarization.standalone.core.stream.sieve.step;
 
 import cn.jfoxx.util.get.GArrayList;
 
@@ -8,12 +8,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SS_Main_Step3 {
+public class StreamSieverStep3 {
 	public static int k;// size of sumZ
 	public static int d;// the demension of sumZ
 
-	public static ArrayList<SS_Siever_Step> sievers = new ArrayList<SS_Siever_Step>();// sievers
-																						// list
+	public static ArrayList<StreamSieveStepObject> sievers = new ArrayList<StreamSieveStepObject>();// sievers
+	// list
 	public static ArrayList<Integer> maxSieversids;
 	public static long maxrunningtime = 0;
 	public static double maxgain = 0;
@@ -28,7 +28,6 @@ public class SS_Main_Step3 {
 		while (loadPerResult(ssid++))
 			// load successful
 			sc++;
-		;
 	}
 
 	public static boolean loadPerResult(int id) {
@@ -41,7 +40,7 @@ public class SS_Main_Step3 {
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
-			String ts = null;
+			String ts;
 
 			// first line
 			ts = reader.readLine();
@@ -54,7 +53,7 @@ public class SS_Main_Step3 {
 			long rt = Integer.valueOf(ts);
 
 			// save
-			SS_Siever_Step s = new SS_Siever_Step(gain, rt, sids);
+			StreamSieveStepObject s = new StreamSieveStepObject(gain, rt, sids);
 			sievers.add(s);
 
 			reader.close();
@@ -82,15 +81,14 @@ public class SS_Main_Step3 {
 		LoadSieves(ssid);
 
 		// get max
-		ArrayList<SS_Siever_Step> sf = sievers;
-		for (int j = 0; j < sf.size(); j++) {
-			SS_Siever_Step s = sf.get(j);
+		ArrayList<StreamSieveStepObject> sf = sievers;
+		for (StreamSieveStepObject s : sf) {
 			if (s.Gain > maxgain) {
 				maxgain = s.Gain;
 				maxSieversids = s.s_ids;
 			}
-			if (s.runningtime > maxrunningtime) {
-				maxrunningtime = s.runningtime;
+			if (s.runningTime > maxrunningtime) {
+				maxrunningtime = s.runningTime;
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package cn.jfoxx.summarization.standalone.core.Stream_HierarchyStream;
+package cn.jfoxx.summarization.standalone.core.stream.hierarchy;
 
 import cn.jfoxx.summarization.standalone.entity.SumZ;
 import cn.jfoxx.summarization.standalone.entity.SumZ_AttList;
@@ -7,7 +7,7 @@ import cn.jfoxx.summarization.standalone.gain.Calculator;
 
 import java.util.ArrayList;
 
-public class HS_Layers {
+public class HierarchySieveLayers {
 
     public int id;// layer's id
     public int k;// size of sumZ
@@ -50,8 +50,8 @@ public class HS_Layers {
      *
      * @param _id:this layer'id
      */
-    public HS_Layers(int _id, SumZ _upper_sumZ, SumZ_AttList _p, int _lk,
-                     double _e) {
+    public HierarchySieveLayers(int _id, SumZ _upper_sumZ, SumZ_AttList _p, int _lk,
+                                double _e) {
         id = _id;
         upper_sumZ = _upper_sumZ;
         lk = _lk;

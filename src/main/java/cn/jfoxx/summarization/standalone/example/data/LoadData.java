@@ -1,13 +1,13 @@
-package cn.jfoxx.summarization.standalone.data;
+package cn.jfoxx.summarization.standalone.example.data;
+
+import cn.jfoxx.summarization.standalone.entity.SumZ_Att;
+import cn.jfoxx.summarization.standalone.entity.SumZ_Object;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import cn.jfoxx.summarization.standalone.entity.SumZ_Att;
-import cn.jfoxx.summarization.standalone.entity.SumZ_Object;
 
 public class LoadData {
 	/*
@@ -17,11 +17,11 @@ public class LoadData {
 			int column) {
 		File file = new File(path);
 		BufferedReader reader = null;
-		int r = 0;
+		int r;
 		ArrayList<int[]> Data = new ArrayList<int[]>();// int[row][column];
 		try {
 			reader = new BufferedReader(new FileReader(file));
-			String tempString = null;
+			String tempString;
 
 			// load Data
 			for (r = 0; r < row; r++) {
@@ -50,11 +50,11 @@ public class LoadData {
 													   int column) {
 		File file = new File(path);
 		BufferedReader reader = null;
-		int r = 0;
+		int r;
 		ArrayList<SumZ_Object> Data = new ArrayList<SumZ_Object>();// int[row][column];
 		try {
 			reader = new BufferedReader(new FileReader(file));
-			String tempString = null;
+			String tempString;
 
 			// load Data
 			for (r = 0; r < row; r++) {

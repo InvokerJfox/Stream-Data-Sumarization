@@ -1,18 +1,18 @@
-package cn.jfoxx.summarization.standalone.core.Stream_Sieve;
+package cn.jfoxx.summarization.standalone.core.stream.sieve.multithread;
 
 import cn.jfoxx.summarization.standalone.gain.Calculator;
 import cn.jfoxx.util.get.GDoubleMatrix;
 
 import java.util.ArrayList;
 
-public class SS_Main_thread {
+public class SteamSieveThreadMain {
 	public static int k;// size of sumZ
 	public static double mg;// current max gain
 	public static int d;// the demension of sumZ
 	public static int maxI;// i:current max (1+e)^i
 	public static double e;// e:(1+e)^i
 	public static double mr;// m<(1+e)^i<mr*k*m
-	public static ArrayList<SS_Siever_thread> sievers;// sievers list
+	public static ArrayList<SteamSieverThread> sievers;// sievers list
 	public static int maxSiverid;// the beast siver
 
 	public static double[] p;// power
@@ -36,7 +36,7 @@ public class SS_Main_thread {
 		p = GDoubleMatrix.fromIntergerMatrix(o);
 		// initial have not add a new siever
 		maxI = (int) Math.floor(Math.log10(_mg) / Math.log10(1 + e)) - 1;
-		sievers = new ArrayList<SS_Siever_thread>();
+		sievers = new ArrayList<SteamSieverThread>();
 
 		Disperse(0);
 	}
@@ -48,13 +48,12 @@ public class SS_Main_thread {
 	 */
 	public static void GetMaxSieveid() throws InterruptedException {
 		double mGain = 0;
-		ArrayList<SS_Siever_thread> sf = sievers;
+		ArrayList<SteamSieverThread> sf = sievers;
 		// check every siever is ending
 		int ok = 0;
 		while (ok < sf.size()) {
 			ok = 0;
-			for (int j = 0; j < sf.size(); j++) {
-				SS_Siever_thread s = sf.get(j);
+			for (SteamSieverThread s : sf) {
 				if (s.isAlive()) {
 					Thread.sleep(200);
 					break;
@@ -66,7 +65,7 @@ public class SS_Main_thread {
 		}
 
 		for (int j = 0; j < sf.size(); j++) {
-			SS_Siever_thread s = sf.get(j);
+			SteamSieverThread s = sf.get(j);
 			if (s.Gain > mGain) {
 				mGain = s.Gain;
 				maxSiverid = j;
@@ -125,7 +124,7 @@ public class SS_Main_thread {
 		for (; Math.pow(1 + e, i) < mr * k * mg; i++) {
 			double tGain = Math.pow(1 + e, i);
 			// Add a new SS_Siever_NoPower
-			SS_Siever_thread s = new SS_Siever_thread(k, tGain, d, os, startid);
+			SteamSieverThread s = new SteamSieverThread(k, tGain, d, os, startid);
 			sievers.add(s);
 		}
 		maxI = i;
@@ -147,9 +146,9 @@ public class SS_Main_thread {
 		}
 
 		// all filter
-		ArrayList<SS_Siever_thread> sf = sievers;
-		for (int j = 0; j < sf.size(); j++) {
-			sf.get(j).SieveData(oid, o);
+		ArrayList<SteamSieverThread> sf = sievers;
+		for (SteamSieverThread aSf : sf) {
+			aSf.SieveData(oid, o);
 		}
 	}
 
@@ -171,9 +170,9 @@ public class SS_Main_thread {
 			Disperse(oid);
 		}
 		// all filter
-		ArrayList<SS_Siever_thread> sf = sievers;
-		for (int j = 0; j < sf.size(); j++) {
-			sf.get(j).SieveData(oid, o, p);
+		ArrayList<SteamSieverThread> sf = sievers;
+		for (SteamSieverThread aSf : sf) {
+			aSf.SieveData(oid, o, p);
 		}
 	}
 }

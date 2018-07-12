@@ -1,4 +1,4 @@
-package cn.jfoxx.summarization.standalone.data;
+package cn.jfoxx.summarization.standalone.example.data;
 
 import cn.jfoxx.util.file.FileControl;
 import cn.jfoxx.util.random.Number;
@@ -117,7 +117,6 @@ public class GenData {
 					attPro[(int) Math.round((dimension - 1) * Math.random())] += Math
 							.random() / 10;
 					i--;
-					continue;
 				}
 			}
 

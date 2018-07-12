@@ -1,7 +1,5 @@
 package cn.jfoxx.summarization.standalone.gain;
 
-import cn.jfoxx.summarization.standalone.core.Step_SHS_Greedy_NoP.SHS_Object_Step_NoP;
-import cn.jfoxx.summarization.standalone.core.Stream_HierarchyStream_Step.HS_Object;
 import cn.jfoxx.summarization.standalone.entity.SumZ;
 import cn.jfoxx.summarization.standalone.entity.SumZ_Att;
 import cn.jfoxx.summarization.standalone.entity.SumZ_AttList;
@@ -99,24 +97,6 @@ public class Calculator {
         return g;
     }
 
-    public static double GOOinF(SHS_Object_Step_NoP o, int[] f, double[] p) {
-        double g = 0;
-        for (int i = 0; i < f.length; i++) {
-            g += o.A[i] * p[i] * f[i];// if f[i]=1 ,s+=0;
-        }
-
-        return g;
-    }
-
-    public static double GOOinF(HS_Object o, int[] f, double[] p) {
-        double g = 0;
-        for (int i = 0; i < f.length; i++) {
-            g += o.A[i] * p[i] * f[i];// if f[i]=1 ,s+=0;
-        }
-
-        return g;
-    }
-
     /*
      * Gain of SumZ/objects without power
      *
@@ -130,54 +110,6 @@ public class Calculator {
         int[] f = GetFeather(s, d);
 
         return GOO(f);
-    }
-
-    /*
-     *
-     */
-    public static double GOSinF(int[] s, int[] f) {
-        return GOOinF(s, f);
-    }
-
-    public static int[] getFeather_SHS(ArrayList<SHS_Object_Step_NoP> s, int d) {
-
-        // get all feather included by s
-        int[] f;
-        if (s.size() > 0) {
-            f = new int[s.get(0).A.length];
-            for (int i = 0; i < f.length; i++) {
-                for (SHS_Object_Step_NoP value : s) {
-                    if (value.A[i] == 1) {
-                        f[i] = 1;
-                        break;
-                    }
-                }
-            }
-        } else {
-            f = new int[d];
-        }
-
-        return f;
-    }
-
-    public static int[] getFeather_HS(ArrayList<HS_Object> s, int d) {
-        // get all feather included by s
-        int[] f;
-        if (s.size() > 0) {
-            f = new int[s.get(0).A.length];
-            for (int i = 0; i < f.length; i++) {
-                for (HS_Object value : s) {
-                    if (value.A[i] == 1) {
-                        f[i] = 1;
-                        break;
-                    }
-                }
-            }
-        } else {
-            f = new int[d];
-        }
-
-        return f;
     }
 
     /*
@@ -636,7 +568,7 @@ public class Calculator {
         double sumS = GOO(s);
         double sumAll = GOO(p);// the sum of all objects' features
 
-        return Math.round((double) sumS / sumAll * 10000) / 100.0;
+        return Math.round(sumS / sumAll * 10000) / 100.0;
     }
 
     /*
@@ -668,9 +600,9 @@ public class Calculator {
      */
     public static double[] GetPower(ArrayList<int[]> os) {
         double[] p = new double[os.get(0).length];
-        for (int i = 0; i < os.size(); i++) {
+        for (int[] o : os) {
             for (int j = 0; j < p.length; j++)
-                p[j] += os.get(i)[j];
+                p[j] += o[j];
         }
         return p;
 

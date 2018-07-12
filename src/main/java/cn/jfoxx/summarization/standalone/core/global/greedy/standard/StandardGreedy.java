@@ -1,10 +1,10 @@
-package cn.jfoxx.summarization.standalone.core.StandardGreedy;
-
-import java.util.ArrayList;
+package cn.jfoxx.summarization.standalone.core.global.greedy.standard;
 
 import cn.jfoxx.summarization.standalone.gain.Calculator;
 
-public class Greedy {
+import java.util.ArrayList;
+
+public class StandardGreedy {
 
 	public static ArrayList<Integer> s_ids;// the ids of sumZ
 	public static ArrayList<int[]> sumZ;// the sumZ
